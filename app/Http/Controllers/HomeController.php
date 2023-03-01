@@ -5,6 +5,10 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
+
+require_once app_path('function.php');
+
+
 class HomeController extends Controller
 {
     /**
@@ -24,11 +28,7 @@ class HomeController extends Controller
      */
     public function index()
     {
-        // join
-        // $test = DB::table('users')->join('orders' ,'users.id' , '=' ,'orders.user_id')->select('users.name' , 'orders.order_number')->get();
-        // $test = DB::table('users')->leftjoin('orders' ,'users.id' , '=' ,'orders.user_id')->select('users.name' , 'orders.order_number')->get();
-        // $test =  DB::table('users')->crossJoin('orders')->select('users.name' , 'orders.order_number')->get();
-        // return $test;
+        
         return view('home');
     }
 }

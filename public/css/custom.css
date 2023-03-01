@@ -1,0 +1,127 @@
+.panel.panel-default {
+    font-size: 16px;
+}
+#chat-body{
+    padding: 0;
+    height: 80vh;
+    overflow-y: scroll;
+}
+#msg-body{
+    padding: 0;
+    height: 60vh;
+    overflow-y: scroll;
+}
+.chat-item{
+    max-width: 100%;
+    display: block;
+    border-bottom: 1px solid #c2c2c2;
+    background-color: #ffffff;
+    color:#000000;
+    cursor: pointer;
+    padding: 12px;
+    position: relative;
+}
+.chat-item:hover{
+    background-color: #c2c2c2;
+}
+.chat-item-img{
+ width: 60px;
+ height: 60px;
+ position: relative;
+ display: inline;
+}
+.chat-item-users{
+    display: inline;
+    font-size: 17px;
+    margin-left: 12px;
+}
+.new-msg-count{
+    position: absolute;
+    top:15px;
+    right:8px;
+    border-radius: 50px;
+    background-color: rgb(0, 0, 255);
+    color: #ffff;
+    min-height: 22px;
+    min-width: 22px;
+    text-align:center;
+    height: auto;
+    font-family:Arial, Helvetica, sans-serif;
+    line-height:22px;
+}
+.no-chat{
+    text-align: center;
+    margin-bottom: 16px;
+    padding:7px 0px;
+}
+.msg-item{
+    position: relative;
+    margin-bottom: 16px;
+    padding:7px 0px;
+    clear: both;
+}
+.msg-item-img{
+    height:60px !important;
+    width: 60px !important;
+    position: absolute;
+    margin-left:10px;
+    display: inline !important;
+    top:0px;
+}
+.msg-item-txt::before{
+    content: "";
+    width: 0;
+    height: 0;
+    border-top: 10px solid transparent;
+    border-bottom: 10px solid transparent;
+    border-right: 10px solid;
+    border-right-color:inherit;
+    position: absolute;
+    left:-10px;
+    top:6px
+}
+.msg-item-txt{
+    position: relative;
+    display: inline-block;
+    margin-left:77px;
+    border:1px solid #c2c2c2;
+    border-radius:4px;
+    padding: 10px 12px;
+    max-width:70%;
+    background-color: #ffff;
+    margin-bottom: 12px;
+}
+.msg-item-data{
+    position: relative;
+    display: inline-block;
+    color: #898989;
+    font-size: 12px;
+    text-align:right;
+    margin-top:7px ;
+    right: -2px;
+    bottom:-7px;
+}
+
+/* //////chat with me  */
+.me{
+    margin-bottom: 60px !important;
+}
+.me .msg-item-img{
+    right: 0;
+}
+.me .msg-item-txt{
+    background-color:#3097d1;
+    color:#ffffff;
+    float: right;
+    margin-right:77px;
+}
+.me .msg-item-txt::before{
+    border-right: none;
+    border-left: 10px solid;
+    right: -10px;
+    left:auto;
+    border-left-color: #3097d1;
+}
+.me .msg-item-data{
+    color: #f2f2f2;
+}
