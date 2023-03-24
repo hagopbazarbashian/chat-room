@@ -73,7 +73,7 @@ class ChatRoomController extends Controller
             }
             if(!empty($chat)){
                 $resp['status'] = 1;
-                $resp['txt'] = "its ok";
+                $resp['txt'] = "Create in your chat list";
                 $resp['obj'] = $chat;
                 $resp['objusers'] = $chat->users;
 
@@ -133,4 +133,5 @@ class ChatRoomController extends Controller
     {
         //
     }
+    
 }

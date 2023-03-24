@@ -101,6 +101,7 @@
           </button>
         </div>
         <div class="modal-body">
+          <p id=alert></p>
           <form id="create-form">
             <fieldset class="form-group">
                 <label>
@@ -110,7 +111,6 @@
                 @foreach ($user as $users)
                     <option class="dropdown-item" value="{{ $users->id }}">{{ $users->name }}</option>
                 @endforeach
-
                 </select>
             </fieldset>
           </form>

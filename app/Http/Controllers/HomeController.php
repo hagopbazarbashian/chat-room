@@ -32,8 +32,9 @@ class HomeController extends Controller
     public function index()
     {
         $user = User::allusers();
-        // $chats = Auth::User()->chats()->ordervy("id" ,"desc")->get();
+        $chats = Auth::User()->chats()->orderby("id" ,"desc")->get();
+        $me = Auth::user();
 
-        return view('home' ,compact('user'));
+        return view('home' ,compact('user' , 'chats' ,'me'));
     }
 }
