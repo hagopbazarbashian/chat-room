@@ -110,7 +110,7 @@
                 @foreach ($user as $users)
                     <option class="dropdown-item" value="{{ $users->id }}">{{ $users->name }}</option>
                 @endforeach
-               
+
                 </select>
             </fieldset>
           </form>
@@ -123,7 +123,7 @@
             <i class="fa fa-spinner fa-spin"></i> Creating...
         </div>
       </div>
-    </div> 
+    </div>
   </div>
 
 </body>

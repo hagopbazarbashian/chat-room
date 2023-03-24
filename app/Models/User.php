@@ -6,6 +6,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use App\Models\Chat;
 use Auth;
 use Laravel\Sanctum\HasApiTokens;
 
@@ -34,7 +35,7 @@ class User extends Authenticatable
         'remember_token',
     ];
 
-    /**  
+    /**
      * The attributes that should be cast.
      *
      * @var array<string, string>
@@ -45,5 +46,9 @@ class User extends Authenticatable
 
     static  function allusers(){
         return User::where("id" , "<>" , Auth()->user()->id)->get();
+    }
+
+    public function chats(){
+        return $this->belongsToMany(chat::class);
     }
 }

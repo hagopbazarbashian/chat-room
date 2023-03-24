@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\User;
+use App\Models\Chat;
 use Illuminate\Support\Facades\DB;
+use Auth;
 
 
 require_once app_path('function.php');
@@ -30,6 +32,7 @@ class HomeController extends Controller
     public function index()
     {
         $user = User::allusers();
+        // $chats = Auth::User()->chats()->ordervy("id" ,"desc")->get();
 
         return view('home' ,compact('user'));
     }
