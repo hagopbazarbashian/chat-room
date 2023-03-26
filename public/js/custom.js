@@ -47,6 +47,72 @@ $(document).ready(function(){
             }
         });
     });
+
+    // Delete Chat list
+    $('.chat-item-delete').on('click', function() {
+        var chatitem = $(".chat-item-delete").attr('value');
+        // Send the AJAX request
+        $.ajax({
+          url: '/deletechatlist',
+          type: 'POST',
+          data: {
+            "_token":$('meta[name="csrf-token"]').attr('content'),
+              "chatitem": chatitem
+          },
+          success: function(resp) {
+            // Handle the response
+            console.log(resp);
+          }
+        });
+    });
+
+    $('.chat-item').on('click', function() {
+        $(this).addClass("chat-select").siblings().removeClass('chat-select')
+        var c_id = $(".chat-item").attr("id")
+        $("#create-msg-form").find("#chat-id").val(c_id);
+
+
+        var el = $(this);
+        msg_load(c_id ,10 ,true,el)
+        
+        
+    });
+
+    var msg_load = function(c_id=null , tk=null , limit=10 ,first=false, el=null){
+        if(c_id != null && c_id != ''){
+
+            $.ajax({
+                url: '/message-list',
+                type: 'POST',
+                data: {
+                  "_token":$('meta[name="csrf-token"]').attr('content'),
+                    'c_id': c_id,
+                    'limit':limit,
+                     
+                },
+                success: function(resp) {
+                  // Handle the response
+                  console.log(resp);
+                }
+            }).done(function(){
+
+            });
+
+        }
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
 });
 
 

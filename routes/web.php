@@ -22,6 +22,10 @@ Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
-route::post('/store' ,[ChatRoomController::class , 'store']);
+Route::middleware(['auth'])->group(function () {
+    route::post('/store' ,[ChatRoomController::class , 'store']);
+    Route::post('/deletechatlist' ,[ChatRoomController::class , 'destroy']);
+});
+
 
 

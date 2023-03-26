@@ -1,6 +1,6 @@
 @if(count($chats) > 0)
 @foreach ($chats as $chat)
-<div id="{{ $chat->id }}" class="chat-item">
+<div id="{{ $chat->id }}"  class="chat-item">
     @if(count($chat->users) > 2)
     <img class="img-circle img-responsive chat-item-img"  src="{{asset('/img/default-group.png')}}">
     @else
@@ -21,6 +21,9 @@
         ?>
     </div>
     <div class="new-msg-count">6</div>
+    <div class="flex">
+        <i class="fa fa-trash chat-item-delete" value="{{ $chat->id }}" aria-hidden="true"></i>
+    </div>
 </div>
 @endforeach
 
