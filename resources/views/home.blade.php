@@ -22,9 +22,9 @@
                     @include('layouts.msg_list')
                 </div>
                 <form class="msger-inputarea" id="create-msg-form">
-                    <input type="text" class="msger-input" style="width: 100%;" placeholder="Enter your message...">
+                    <input type="text" class="msger-input" id="msg" disabled style="width: 100%;" placeholder="Enter your message...">
                     <input type="hidden"  id="chat-id" name="chat_id" value="">
-                    <button  class="msger-send-btn"><i class="fa fa-paper-plane" aria-hidden="true"></i></button>
+                    <button  class="msger-send-btn" id="msg-send" disabled><i class="fa fa-paper-plane" aria-hidden="true"></i></button>
                 </form>
             </div>
         </div>

@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ChatRoomController;
+use App\Http\Controllers\MsgController;
 
 /*
 |--------------------------------------------------------------------------
@@ -25,6 +26,8 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 Route::middleware(['auth'])->group(function () {
     route::post('/store' ,[ChatRoomController::class , 'store']);
     Route::post('/deletechatlist' ,[ChatRoomController::class , 'destroy']);
+    Route::post('/message-list' ,[MsgController::class , 'message_list']);
+    Route::post('/message' ,[MsgController::class , 'store']);
 });
 
 

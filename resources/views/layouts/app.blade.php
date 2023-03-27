@@ -103,7 +103,7 @@
         </div>
         <div class="modal-body">
           <p id=alert></p>
-          <form id="create-form">  
+          <form id="create-form">
             <fieldset class="form-group">
                 <label>
                     Select Users

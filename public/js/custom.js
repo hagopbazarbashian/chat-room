@@ -21,15 +21,15 @@ $(document).ready(function(){
               success: function(resp) {
                 // Hide the loading spinner
                 $('#loading-spinner').hide();
-            
+
                 try {
                     // Try to parse the response as JSON
                     var responseObj = JSON.parse(resp);
-            
+
                     if (responseObj.status === 1) {
                         // Do something with the response data
                         console.log(responseObj.obj);
-            
+
                         // Display a success message in a Bootstrap alert
                         $('#alert').html('<div class="alert alert-success">' + responseObj.txt + '</div>');
                          location.reload();
@@ -74,11 +74,58 @@ $(document).ready(function(){
 
         var el = $(this);
         msg_load(c_id ,10 ,true,el)
-        
-        
+
+
     });
 
+
+    $('#msg-send').on('click', function() {
+        var msg = $("#msg").val()
+        var chat_id = $("#chat-id").val()
+
+        $.ajax({
+            url: '/message',
+            type: 'POST',
+            data: {
+              "_token":$('meta[name="csrf-token"]').attr('content'),
+                'msg': msg,
+                'chat_id':chat_id,
+
+            },
+            success: function(resp) {
+              // Handle the response
+              console.log(resp);
+            }
+        }).done(function(resp){
+            // try{
+            //     resp = $.parseJSON(resp)
+            // } catch(e){
+            //     window.location = "/chat/public/login";
+            // }
+            // if(resp.status = 1){
+            //     $("#msg-body").empty().html(resp.txt);
+            //     var objDiv = document.getElementById("msg-body");
+
+            //     if((Math.ceil($("#msg-body").scrollTop() + $("#msg-body").innerHeight() ) ) >= (objDiv.scrollHeight - 110) || first == true){
+            //         objDiv.scrollTop = objDiv.scrollHeight;
+            //     }
+            //     $("#create-msg-form").find("#msg").prop("disabled" ,false);
+            //     $("#create-msg-form").find("#msg-send").prop("disabled" ,false);
+
+            // }
+
+        }).fail(function(jqXHR){
+
+        })
+
+    });
+
+
     var msg_load = function(c_id=null , tk=null , limit=10 ,first=false, el=null){
+        if(c_id == null || c_id == ''){
+            var c_id = $("#chat-id").vall();
+        }
+
         if(c_id != null && c_id != ''){
 
             $.ajax({
@@ -88,15 +135,33 @@ $(document).ready(function(){
                   "_token":$('meta[name="csrf-token"]').attr('content'),
                     'c_id': c_id,
                     'limit':limit,
-                     
+
                 },
                 success: function(resp) {
                   // Handle the response
                   console.log(resp);
                 }
-            }).done(function(){
+            }).done(function(resp){
+                try{
+                    resp = $.parseJSON(resp)
+                } catch(e){
+                    window.location = "/chat/public/login";
+                }
+                if(resp.status = 1){
+                    $("#msg-body").empty().html(resp.txt);
+                    var objDiv = document.getElementById("msg-body");
 
-            });
+                    if((Math.ceil($("#msg-body").scrollTop() + $("#msg-body").innerHeight() ) ) >= (objDiv.scrollHeight - 110) || first == true){
+                        objDiv.scrollTop = objDiv.scrollHeight;
+                    }
+                    $("#create-msg-form").find("#msg").prop("disabled" ,false);
+                    $("#create-msg-form").find("#msg-send").prop("disabled" ,false);
+
+                }
+
+            }).fail(function(jqXHR){
+
+            })
 
         }
     }
