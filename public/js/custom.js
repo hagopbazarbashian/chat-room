@@ -78,49 +78,81 @@ $(document).ready(function(){
 
     });
 
+    
 
+    $('.chat-item').on('click', function() {
+        $(this).addClass("chat-select").siblings().removeClass('chat-select')
+        var c_id = $(this).attr("id")
+        $("#create-msg-form").find("#chat-id").val(c_id);
+    
+        var el = $(this);
+        msg_load(c_id, 10, true, el);
+    });
+    
     $('#msg-send').on('click', function() {
         var msg = $("#msg").val()
         var chat_id = $("#chat-id").val()
-
+    
         $.ajax({
             url: '/message',
             type: 'POST',
             data: {
-              "_token":$('meta[name="csrf-token"]').attr('content'),
+                "_token": $('meta[name="csrf-token"]').attr('content'),
                 'msg': msg,
-                'chat_id':chat_id,
-
+                'chat_id': chat_id,
             },
             success: function(resp) {
-              // Handle the response
-              console.log(resp);
+                // Handle the response
+                console.log(resp);
             }
-        }).done(function(resp){
-            // try{
-            //     resp = $.parseJSON(resp)
-            // } catch(e){
-            //     window.location = "/chat/public/login";
-            // }
-            // if(resp.status = 1){
-            //     $("#msg-body").empty().html(resp.txt);
-            //     var objDiv = document.getElementById("msg-body");
-
-            //     if((Math.ceil($("#msg-body").scrollTop() + $("#msg-body").innerHeight() ) ) >= (objDiv.scrollHeight - 110) || first == true){
-            //         objDiv.scrollTop = objDiv.scrollHeight;
-            //     }
-            //     $("#create-msg-form").find("#msg").prop("disabled" ,false);
-            //     $("#create-msg-form").find("#msg-send").prop("disabled" ,false);
-
-            // }
-
-        }).fail(function(jqXHR){
-
-        })
-
+        }).done(function(resp) {
+            try {
+                resp = $.parseJSON(resp)
+            } catch (e) {
+                window.location = "/chat/public/login";
+            }
+            if (resp.status = 1) {
+                $("#msg").val('');
+                new_msg_load(chat_id, 1);
+            }
+    
+        }).fail(function(jqXHR) {
+    
+        });
     });
-
-
+    
+    var new_msg_load = function(c_id = null, tk = null, me = 0) {
+        if (c_id == null || c_id == '') {
+            c_id = $("#chat-id").val();
+        }
+    
+        if (c_id != null && c_id != '') {
+            $.ajax({
+                url: '/new-message-list',
+                type: 'POST',
+                data: {
+                    "_token": $('meta[name="csrf-token"]').attr('content'),
+                    'c_id': c_id,
+                    'me': me
+                },
+                
+    
+                success: function(resp) {
+                    if (resp.status == 1) {
+                        $("#msg-body").append(resp.txt);
+                        var objDiv = document.getElementById("msg-body");
+                        if ((Math.ceil($("#msg-body").scrollTop() + $("#msg-body").innerHeight())) >= (objDiv.scrollHeight - 110) || first == true) {
+                            objDiv.scrollTop = objDiv.scrollHeight;
+                        }
+                    }
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    console.log(errorThrown);
+                }
+            });
+        }
+    };
+    
     var msg_load = function(c_id=null , tk=null , limit=10 ,first=false, el=null){
         if(c_id == null || c_id == ''){
             var c_id = $("#chat-id").vall();
@@ -165,6 +197,8 @@ $(document).ready(function(){
 
         }
     }
+
+
 
 
 

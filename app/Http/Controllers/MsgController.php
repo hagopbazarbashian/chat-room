@@ -45,11 +45,21 @@ class MsgController extends Controller
         $cu = Auth::user()->id;
 
         $msg = new Message;
-        $msg->msg = $requrst->msg;
+        $msg->msg = $request->msg;
         $msg->user_id = $cu;
-        $msg->chat_id = $requrst->chat_id;
+        $msg->chat_id = $request->chat_id;
         $msg->seen = 0;
         $msg->save();
+        if(!empty($msg)){
+            $resp["status"] = 1;
+            $resp["txt"] = "Successfully create New Msg";
+            $resp["obj"] = $msg;
+        }else{
+            $resp["status"] = 0;
+            $resp["txt"] = "Successfully create New Msg";
+        }
+
+        return json_encode($resp);
 
 
     }
@@ -113,4 +123,23 @@ class MsgController extends Controller
 
         return json_encode($resp);
     }
+
+    public function new_message_list(Request $request)
+    {
+        $Chat = Chat::find($request->c_id);
+        $me = Auth::user();
+        if($request->me == 1){
+            $msgs = $Chat->msgs()->where('seen' , 0)->where('user_id' , $me->id)->orderBy("id" , "desc")->take(1)->get();
+        }else{
+            $msgs = $Chat->msgs()->where('seen' , 0)->where('user_id' , '<>' , $me->id)->take(1)->get();
+        }
+        
+            $html = view('layouts.msg_list',compact('msgs','me'));
+            $resp['status'] = 1;
+            $resp['txt'] = $html;
+        
+        return response()->json($resp);
+    }
+
+    
 }

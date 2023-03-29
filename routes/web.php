@@ -27,6 +27,7 @@ Route::middleware(['auth'])->group(function () {
     route::post('/store' ,[ChatRoomController::class , 'store']);
     Route::post('/deletechatlist' ,[ChatRoomController::class , 'destroy']);
     Route::post('/message-list' ,[MsgController::class , 'message_list']);
+    Route::post('/new-message-list' ,[MsgController::class , 'new_message_list']);
     Route::post('/message' ,[MsgController::class , 'store']);
 });
 
