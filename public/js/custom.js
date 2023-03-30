@@ -78,21 +78,21 @@ $(document).ready(function(){
 
     });
 
-    
+
 
     $('.chat-item').on('click', function() {
         $(this).addClass("chat-select").siblings().removeClass('chat-select')
         var c_id = $(this).attr("id")
         $("#create-msg-form").find("#chat-id").val(c_id);
-    
+
         var el = $(this);
         msg_load(c_id, 10, true, el);
     });
-    
+
     $('#msg-send').on('click', function() {
         var msg = $("#msg").val()
         var chat_id = $("#chat-id").val()
-    
+
         $.ajax({
             url: '/message',
             type: 'POST',
@@ -115,17 +115,17 @@ $(document).ready(function(){
                 $("#msg").val('');
                 new_msg_load(chat_id, 1);
             }
-    
+
         }).fail(function(jqXHR) {
-    
+
         });
     });
-    
+
     var new_msg_load = function(c_id = null, tk = null, me = 0) {
         if (c_id == null || c_id == '') {
             c_id = $("#chat-id").val();
         }
-    
+
         if (c_id != null && c_id != '') {
             $.ajax({
                 url: '/new-message-list',
@@ -135,8 +135,8 @@ $(document).ready(function(){
                     'c_id': c_id,
                     'me': me
                 },
-                
-    
+
+
                 success: function(resp) {
                     if (resp.status == 1) {
                         $("#msg-body").append(resp.txt);
@@ -152,7 +152,7 @@ $(document).ready(function(){
             });
         }
     };
-    
+
     var msg_load = function(c_id=null , tk=null , limit=10 ,first=false, el=null){
         if(c_id == null || c_id == ''){
             var c_id = $("#chat-id").vall();
@@ -174,13 +174,13 @@ $(document).ready(function(){
                   console.log(resp);
                 }
             }).done(function(resp){
-                try{
-                    resp = $.parseJSON(resp)
-                } catch(e){
-                    window.location = "/chat/public/login";
-                }
+                // try{
+                //     resp = $.parseJSON(resp)
+                // } catch(e){
+                //     window.location = "/chat/public/login";
+                // }
                 if(resp.status = 1){
-                    $("#msg-body").empty().html(resp.txt);
+                    $("#msg-body").empty().append(resp.txt);
                     var objDiv = document.getElementById("msg-body");
 
                     if((Math.ceil($("#msg-body").scrollTop() + $("#msg-body").innerHeight() ) ) >= (objDiv.scrollHeight - 110) || first == true){

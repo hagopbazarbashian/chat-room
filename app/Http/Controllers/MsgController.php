@@ -54,6 +54,7 @@ class MsgController extends Controller
             $resp["status"] = 1;
             $resp["txt"] = "Successfully create New Msg";
             $resp["obj"] = $msg;
+
         }else{
             $resp["status"] = 0;
             $resp["txt"] = "Successfully create New Msg";
@@ -121,7 +122,7 @@ class MsgController extends Controller
         $resp['status'] = 1;
         $resp['txt'] = (string) $html;
 
-        return json_encode($resp);
+        return response()->json($resp);
     }
 
     public function new_message_list(Request $request)
@@ -131,15 +132,19 @@ class MsgController extends Controller
         if($request->me == 1){
             $msgs = $Chat->msgs()->where('seen' , 0)->where('user_id' , $me->id)->orderBy("id" , "desc")->take(1)->get();
         }else{
-            $msgs = $Chat->msgs()->where('seen' , 0)->where('user_id' , '<>' , $me->id)->take(1)->get();
+            $msgs = $Chat->msgs()->where('seen' , 0)->where('user_id' , $me->id)->orderBy("id" , "desc")->take(1)->get();
         }
-        
-            $html = view('layouts.msg_list',compact('msgs','me'));
+
+        if(count($msgs) > 0){
+            $html = view('layouts.msg_list',compact('msgs','me'))->render();
             $resp['status'] = 1;
-            $resp['txt'] = $html;
-        
+            $resp['txt'] = (string) $html;
+        }else{
+            $resp['status'] = 2;
+            $resp['txt'] = 'No new messages';
+        }
+
         return response()->json($resp);
     }
 
-    
 }
