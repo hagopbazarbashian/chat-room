@@ -55,6 +55,14 @@ class MsgController extends Controller
             $resp["txt"] = "Successfully create New Msg";
             $resp["obj"] = $msg;
 
+            $c = Chat::find($request->chat_id);
+            if(count($c->msgs) > 1){
+                $resp["fst"] = 0;
+            }else{
+                $resp["fst"] = 1;
+            }
+
+
         }else{
             $resp["status"] = 0;
             $resp["txt"] = "Successfully create New Msg";
@@ -111,9 +119,12 @@ class MsgController extends Controller
     }
 
     public function message_list(Request $request){
-        $Chat = Chat::find($request->c_id);
+        
+
         if($request->limit > 10){
-            $msgs = $Chat->msgs()->take((int)$request->limit)->skip((int)$request->limit - 10)->orderBy("id" , "desc")->get();
+            // $msgs = $Chat->where('chat_id' , $request->c_id)->get();
+            $msgs = Message::where('chat_id' , $request->c_id)->get();
+            // dd($msgs);
         }else{
             $msgs = $Chat->msgs()->take($request->limit)->orderBy("id" , "desc")->get();
         }
@@ -121,7 +132,7 @@ class MsgController extends Controller
         $html = view('layouts.msg_list',compact('msgs','me'))->render();
         $resp['status'] = 1;
         $resp['txt'] = (string) $html;
-
+    
         return response()->json($resp);
     }
 
