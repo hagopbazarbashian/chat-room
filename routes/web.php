@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ChatRoomController;
 use App\Http\Controllers\MsgController;
+use App\Http\Controllers\ActiveChatController;
 
 /*
 |--------------------------------------------------------------------------
@@ -29,6 +30,9 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/message-list' ,[MsgController::class , 'message_list']);
     Route::post('/new-message-list' ,[MsgController::class , 'new_message_list']);
     Route::post('/message' ,[MsgController::class , 'store']);
+    Route::post('/message-seen' ,[MsgController::class , 'message_seen']);
+    Route::post('/active' ,[ActiveChatController::class , 'store']);
+    Route::post('/set-active' ,[ActiveChatController::class , 'set_active']);
 });
 
 

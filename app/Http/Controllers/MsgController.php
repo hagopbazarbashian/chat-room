@@ -119,7 +119,7 @@ class MsgController extends Controller
     }
 
     public function message_list(Request $request){
-        
+
 
         if($request->limit > 10){
             // $msgs = $Chat->where('chat_id' , $request->c_id)->get();
@@ -132,7 +132,7 @@ class MsgController extends Controller
         $html = view('layouts.msg_list',compact('msgs','me'))->render();
         $resp['status'] = 1;
         $resp['txt'] = (string) $html;
-    
+
         return response()->json($resp);
     }
 
@@ -158,4 +158,17 @@ class MsgController extends Controller
         return response()->json($resp);
     }
 
+    public function message_seen(Request $request){
+        $ck = Message::where('seen' , 0)->where('chat_id' , $request->c_id)->where('user_id' ,'<>' ,Auth::user()->id)->update(['seen'=>1]);
+        if($ck){
+            $resp['status'] = 1;
+        }else{
+            $resp['status'] = 0;
+        }
+
+        return response()->json($resp);
+    }
+
+
+ 
 }

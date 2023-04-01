@@ -35,7 +35,8 @@ class HomeController extends Controller
         $chats = Auth::User()->chats()->orderby("id" ,"desc")->get();
         $me = Auth::user();
         $msgs = [];
+        $total_msg = Chat::chat_update($chats);
 
-        return view('home' ,compact('user' , 'chats' ,'me' ,'msgs'));
+        return view('home' ,compact('user' , 'chats' ,'me' ,'msgs' ,'total_msg'));
     }
 }

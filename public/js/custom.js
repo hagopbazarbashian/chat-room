@@ -113,23 +113,56 @@ $(document).ready(function(){
             }
             if (resp.status = 1) {
 
+                $("#msg").val('');
+
                 if(resp.fst == 0){
-                   var fst = 0;
+                    var fst = 0;
                 }else{
-                    var fst = 1;
+                     var fst = 1;
                 }
 
-
-                $("#msg").val('');
                 new_msg_load(chat_id, 1 ,fst);
             }
 
         }).fail(function(jqXHR) {
 
         });
+
+        var textarea = $("#msg");
+        var typingStatus = $("#typing_on");
+        var lasttypedTime = new Date(0);
+        var typingDelayMillis = 4000;
+
+        function refreshTypingStatus() {
+            if (!textarea.attr("disabled") && textarea.is(':focus')) {
+                if (textarea.val() == '' || new Date().getTime() - lasttypedTime.getTime() > typingDelayMillis) {
+                    set_typing(0);
+                } else {
+                    set_typing(1);
+                }
+            }
+        }
+
+        function updateLastTypedTime(){
+            lasttypedTime = new Date();
+        }
+
+        setInterval(refreshTypingStatus , 2000);
+        textarea.keypress(updateLastTypedTime);
+        textarea.blur(function(){
+            set_typing(0);
+        });
+
+
+
+
+
+
+
+
     });
 
-    var new_msg_load = function(c_id = null, tk = null, me = 0 ,fst=0) {
+    var new_msg_load = function(c_id = null, tk = null, me = 0) {
         if (c_id == null || c_id == '') {
             c_id = $("#chat-id").val();
         }
@@ -147,16 +180,20 @@ $(document).ready(function(){
 
                 success: function(resp) {
                     if (resp.status == 1) {
-                        if(fst == 0){
-                            $("#msg-body").append(resp.txt);
-                        }else{
-                            $("#msg-body").html(resp.txt);
-                        }
+
+                        // if(fst == 0){
+                        //     $("#msg-body").append(resp.txt);
+                        // }else{
+                        //     $("#msg-body").html(resp.txt);
+                        // }
                         $("#msg-body").append(resp.txt);
                         var objDiv = document.getElementById("msg-body");
                         if ((Math.ceil($("#msg-body").scrollTop() + $("#msg-body").innerHeight())) >= (objDiv.scrollHeight - 110) || first == true) {
                             objDiv.scrollTop = objDiv.scrollHeight;
                         }
+                        make_active(c_id);
+
+
                     }
                 },
                 error: function(jqXHR, textStatus, errorThrown) {
@@ -167,12 +204,13 @@ $(document).ready(function(){
     };
 
     var msg_load = function(c_id=null , tk=null , limit=10 ,first=false, el=null){
+        var first = true; // Declare the 'first' variable here
         if(c_id == null || c_id == ''){
             var c_id = $("#chat-id").val();
         }
-    
+
         if(c_id != null && c_id != ''){
-    
+
             $.ajax({
                 url: '/message-list',
                 type: 'POST',
@@ -180,7 +218,7 @@ $(document).ready(function(){
                     "_token":$('meta[name="csrf-token"]').attr('content'),
                     'c_id': c_id,
                     'limit':limit,
-    
+
                 },
                 success: function(resp) {
                     // Handle the response
@@ -188,22 +226,112 @@ $(document).ready(function(){
                 }
             }).success(function(resp){
                 if(resp.status == 1){
+
                     $("#msg-body").empty().html(resp.txt);
                     var objDiv = document.getElementById("msg-body");
-    
-                    if((Math.ceil($("#msg-body").scrollTop() + $("#msg-body").innerHeight() ) ) >= (objDiv.scrollHeight - 110) || first == true){
+
+                    if ((Math.ceil($("#msg-body").scrollTop() + $("#msg-body").innerHeight())) >= (objDiv.scrollHeight - 110) || first == true) {
+                        console.log("Auto-scrolling to the bottom of the message list...");
                         objDiv.scrollTop = objDiv.scrollHeight;
+                    } else {
+                        console.log("Not auto-scrolling to the bottom of the message list...");
+                        console.log("scrollTop: " + $("#msg-body").scrollTop());
+                        console.log("innerHeight: " + $("#msg-body").innerHeight());
+                        console.log("scrollHeight: " + objDiv.scrollHeight);
                     }
                     $("#create-msg-form").find("#msg").prop("disabled" ,false);
                     $("#create-msg-form").find("#msg-send").prop("disabled" ,false);
-    
+                    msg_seen(c_id);
+                    make_active(c_id);
+
                 }
-    
+
             }).error(function(jqXHR){
-    
+
             })
-    
+
         }
+    }
+
+
+
+    var msg_seen = function (c_id , el=null) {
+
+        $.ajax({
+            url: '/message-seen',
+            type: 'POST',
+            data: {
+                "_token":$('meta[name="csrf-token"]').attr('content'),
+                'c_id': c_id
+            },
+
+        }).success(function(resp){
+            if(resp.status == 1){
+                if(el != null){
+                    el.removeClass('new-msg');
+                    el.find(".new-msg-count").remove()
+                }
+
+
+            }
+
+        }).error(function(jqXHR){
+
+        })
+
+
+    }
+
+    var  make_active = function (c_id) {
+        if(c_id != null && c_id != '' && !$("#msg").attr('disabled')){
+
+            $.ajax({
+                url: '/active',
+                type: 'POST',
+                data: {
+                    "_token":$('meta[name="csrf-token"]').attr('content'),
+                    'c_id': c_id
+                },
+
+            }).success(function(resp){
+                if(resp.status == 1){
+
+
+                }
+
+            }).error(function(jqXHR){
+
+            })
+        }
+
+    }
+
+    var set_typing = function(con){
+         var c_id = $("#chat-id").attr("id");
+
+         if(c_id != null && c_id != '' && !$("#msg").attr("disabled")){
+
+            $.ajax({
+                url: '/set-active',
+                type: 'POST',
+                data: {
+                    "_token":$('meta[name="csrf-token"]').attr('content'),
+                    'c_id': c_id,
+                    'con':con
+                },
+
+            }).success(function(resp){
+                if(resp.status == 1){
+
+
+                }
+
+            }).error(function(jqXHR){
+
+            })
+
+         }
+
     }
 
 
