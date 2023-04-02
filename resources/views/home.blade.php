@@ -23,10 +23,10 @@
                 </div>
                 <div class="msger-inputarea" id="create-msg-form">
                     <input type="text" class="msger-input" id="msg" disabled style="width: 100%;" placeholder="Enter your message...">
-                    <div id="typing_on"></div>
                     <input type="hidden"  id="chat-id" name="chat_id" value="">
                     <button  class="msger-send-btn" id="msg-send" disabled><i class="fa fa-paper-plane" aria-hidden="true"></i></button>
                 </div>
+                <div id="typing_on"></div>
             </div>
         </div>
     </div>

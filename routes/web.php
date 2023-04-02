@@ -33,6 +33,8 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/message-seen' ,[MsgController::class , 'message_seen']);
     Route::post('/active' ,[ActiveChatController::class , 'store']);
     Route::post('/set-active' ,[ActiveChatController::class , 'set_active']);
+    Route::post('/check-active' ,[ActiveChatController::class , 'check_active']);
+    Route::get('/chat-update' ,[ChatRoomController::class , 'chat_update']);
 });
 
 

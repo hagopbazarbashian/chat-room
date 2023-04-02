@@ -133,6 +133,16 @@ class ChatRoomController extends Controller
     {
          dd($request->chatitem);
     }
+
+
+    public function chat_update(){
+        $chats = Auth::User()->chats()->orderby("id" ,"desc")->get();
+        $total_msg = Chat::chat_update($chats);
+
+        return response()->json($total_msg);
+    }
+
+    
     
 }
    

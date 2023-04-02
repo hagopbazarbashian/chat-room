@@ -153,11 +153,9 @@ $(document).ready(function(){
             set_typing(0);
         });
 
-
-
-
-
-
+        // setInterval(new_msg_load , 1000);
+        setInterval(chat_update, 1200);
+        setInterval(check_typing , 1000);
 
 
     });
@@ -333,6 +331,69 @@ $(document).ready(function(){
          }
 
     }
+
+
+    var check_typing = function(con){
+
+        var c_id = $("#chat-id").val();
+
+        if(c_id != null && c_id != '' && !$("#msg").attr("disabled")){
+
+           $.ajax({
+               url: '/check-active',
+               type: 'POST',
+               data: {
+                   "_token":$('meta[name="csrf-token"]').attr('content'),
+                   'c_id': c_id
+               },
+
+           }).success(function(resp){
+               if(resp.status == 1){
+                $("#typing_on").html(resp. user_name  +  ' is typing ...');
+
+               }else{
+                $("#typing_on").html('');
+               }
+
+           }).error(function(jqXHR){
+
+           })
+
+        }
+
+
+    }
+
+    var chat_update = function() {
+        $.ajax({
+          url: '/chat-update',
+          type: 'get'
+        }).success(function(resp) {
+      
+          $(".chat-item").each(function() {
+            var el = $(this);
+            var id = el.attr("id");
+      
+            if (resp != '') {
+              $.each(resp, function(k, v) {
+                if (id == k) {
+                  el.addClass('new-msg');
+                  el.append('<div class="new-msg-count">' + v + '</div>');
+                }
+      
+              });
+            } else {
+              el.removeClass('new-msg');
+              el.find('.new-msg-count').remove();
+            }
+      
+          });
+      
+      
+        }).error(function(jqXHR) {
+      
+        });
+      }
 
 
 

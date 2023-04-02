@@ -133,5 +133,48 @@ class ActiveChatController extends Controller
 
     }
 
+    public function check_active(Request $request){
+        
+        $cu = Auth::user()->id;
+        $chk = ActiveChat::where('chat_id' , $request->c_id)->where('typing' , 1)->get();
+
+        $usr = [];
+
+        if(count($chk) > 0){
+            foreach($chk as $value){
+                $u = User::find($value->user_id);
+                if($u->id != $cu){
+                    $usr[] = $u->name;
+                }
+
+            }
+
+            if(count($usr) == 1 && $usr != Auth::user()->name && $usr != null){
+                $resp['user_name'] = $usr;
+                $resp['txt'] = 1;
+
+            }elseif(count($usr) > 1 ){
+                $resp['user_name'] = implode("," , $usr);
+                $resp['txt'] = 1;
+            }else{
+                $resp['txt'] = 0;
+            }
+
+
+        }else{
+            $resp['txt'] = 0;
+        }
+
+        if(count($usr) > 0){
+            $resp['status'] = 1;
+            
+        }else{
+            $resp['status'] = 0;
+            $resp['txt'] = "Something is wrong!";
+        }
+
+        return response()->json($resp);
+    }
+
 
 }
