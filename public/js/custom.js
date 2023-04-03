@@ -155,7 +155,7 @@ $(document).ready(function(){
 
         // setInterval(new_msg_load , 1000);
         setInterval(chat_update, 1200);
-        setInterval(check_typing , 1000);
+        // setInterval(check_typing , 1000);
 
 
     });

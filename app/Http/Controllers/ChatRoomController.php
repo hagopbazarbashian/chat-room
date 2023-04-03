@@ -136,8 +136,10 @@ class ChatRoomController extends Controller
 
 
     public function chat_update(){
-        $chats = Auth::User()->chats()->orderby("id" ,"desc")->get();
+        $chats = Auth::user()->chats()->orderby("id" ,"desc")->get();
+    
         $total_msg = Chat::chat_update($chats);
+        // dd($total_msg);
 
         return response()->json($total_msg);
     }
