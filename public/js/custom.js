@@ -106,11 +106,11 @@ $(document).ready(function(){
                 console.log(resp);
             }
         }).done(function(resp) {
-            try {
-                resp = $.parseJSON(resp)
-            } catch (e) {
-                window.location = "/chat/public/login";
-            }
+            // try {
+            //     resp = $.parseJSON(resp)
+            // } catch (e) {
+            //     window.location = "/chat/public/login";
+            // }
             if (resp.status = 1) {
 
                 $("#msg").val('');
@@ -122,6 +122,7 @@ $(document).ready(function(){
                 }
 
                 new_msg_load(chat_id, 1 ,fst);
+
             }
 
         }).fail(function(jqXHR) {
@@ -154,11 +155,13 @@ $(document).ready(function(){
         });
 
         // setInterval(new_msg_load , 1000);
-        setInterval(chat_update, 1200);
-        // setInterval(check_typing , 1000);
+        setInterval(chat_update, 5000);
+        setInterval(check_typing , 1000);
 
 
     });
+
+
 
     var new_msg_load = function(c_id = null, tk = null, me = 0) {
         if (c_id == null || c_id == '') {
@@ -366,34 +369,34 @@ $(document).ready(function(){
 
     var chat_update = function() {
         $.ajax({
-          url: '/chat-update',
-          type: 'get'
-        }).success(function(resp) {
-      
-          $(".chat-item").each(function() {
-            var el = $(this);
-            var id = el.attr("id");
-      
-            if (resp != '') {
-              $.each(resp, function(k, v) {
-                if (id == k) {
-                  el.addClass('new-msg');
-                  el.append('<div class="new-msg-count">' + v + '</div>');
-                }
-      
-              });
-            } else {
-              el.removeClass('new-msg');
-              el.find('.new-msg-count').remove();
+            url: '/chat-update',
+            type: 'GET',
+            success: function(resp) {
+                $(".chat-item").each(function() {
+                    var el = $(this);
+                    var id = el.attr("id");
+
+                    if (resp != '') {
+                        $.each(resp, function(k, v) {
+
+                            if (id == k) {
+                                el.addClass('new-msg');
+                                el.append('<div class="new-msg-count">' + v + '</div>');
+                            }
+                        });
+                    } else {
+                        el.removeClass('new-msg');
+                        el.find('.new-msg-count').remove();
+                    }
+                });
+
+            },
+            error: function(jqXHR) {
+                console.log(jqXHR.responseText);
             }
-      
-          });
-      
-      
-        }).error(function(jqXHR) {
-      
         });
-      }
+    }
+
 
 
 

@@ -109,9 +109,11 @@
                     Select Users
                 </label>
                 <select id="create-data" class="selectpicker" multiple="">
-                @foreach ($user as $users)
+                @if(Auth::check())
+                 @foreach ($user as $users)
                     <option class="dropdown-item" value="{{ $users->id }}">{{ $users->name }}</option>
                 @endforeach
+                @endif
                 </select>
             </fieldset>
           </form>

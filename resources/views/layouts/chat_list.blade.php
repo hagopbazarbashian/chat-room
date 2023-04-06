@@ -1,3 +1,19 @@
+<style>
+
+.new-msg {
+  color:black;
+  font-weight:bold;
+  animation: myanimation 2s infinite;
+}
+
+@keyframes myanimation {
+  0% {background-color: #c2c2c2;}
+  25%{background-color:#fff;}
+  50%{background-color:#c2c2c2;}
+  75%{background-color:#fff;}
+  100% {background-color: #c2c2c2;}
+}
+</style>
 @if(count($chats) > 0)
 @foreach ($chats as $chat)
 <div id="{{ $chat->id }}"  class="chat-item">

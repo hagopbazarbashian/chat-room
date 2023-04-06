@@ -3,7 +3,7 @@
         <div id="{{ $msg->id }}" class="msg-item {{ ($msg->user_id == $me->id) ? 'me' : '' }}">
             <img class="img-circle img-responsive msg-item-img" src="{{ asset('/img/default-user.jpg') }}">
             <div class="msg-item-txt">
-                {{ $msg->msg }}
+                {{ $msg->msg }} 
                 <div class="msg-item-data">
                     @if ($msg->created_at->diffInHours(\Carbon\Carbon::now(), true) > 24 )
                         {{ $msg->created_at->format('d F Y h:i A') }}

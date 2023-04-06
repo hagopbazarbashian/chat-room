@@ -21,23 +21,23 @@ class Chat extends Model
 
     static public function chat_update($chats){
         $total_msg = [];
-
         foreach ($chats as $chat) {
-            $count = 0;
+            $i = 0;
             foreach ($chat->msgs as $msg) {
                 if ($msg->seen == 0 && $msg->user_id != Auth::user()->id) {
-                    $count++;
+                    $i++;
                 }
+
             }
-            if ($count > 0) {
-                $total_msg[$chat->id] = $count;
+            if ($i > 0) {
+                $total_msg[$chat->id] = $i;
             }
         }
 
-        $total_msg_json = $total_msg ? json_encode($total_msg) : '';
-        return $total_msg_json;
-
+        return $total_msg;
     }
+
+
 
 
 
